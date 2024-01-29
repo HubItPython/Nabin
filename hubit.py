@@ -15,6 +15,81 @@ def hub():
     root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
     root.resizable(False,False)
 ################database##########
+    def database():
+        db=Tk()
+        db.title("Linkto your database")
+        data_frame = LabelFrame(db, text="",height=200)
+        data_frame.pack(fill="x", expand="yes", padx=20)
+        hs_label = Label(data_frame, text="Host")
+        hs_label.grid(row=0, column=0, padx=10, pady=10)
+        hs_entry = Entry(data_frame)
+        hs_entry.grid(row=0, column=1, padx=10, pady=10)
+        
+        u_label = Label(data_frame, text="User")
+        u_label.grid(row=0, column=2, padx=10, pady=10)
+        u_entry = Entry(data_frame)
+        u_entry.grid(row=0, column=3, padx=10, pady=10)
+        
+        pasw_label = Label(data_frame, text="Password")
+        pasw_label.grid(row=0, column=4, padx=10, pady=10)
+        pasw_entry = Entry(data_frame)
+        pasw_entry.grid(row=0, column=5, padx=10, pady=10)
+
+
+        def link():
+            host1=hs_entry.get()
+            user1=u_entry.get()
+            password1=pasw_entry.get()
+            try:
+                import mysql.connector
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}")
+                cur = con.cursor()
+                #Execute a SELECT query
+                database_name="student"
+                create_database_query = f"CREATE DATABASE IF NOT EXISTS {database_name}"
+                cur.execute(create_database_query)  
+                cur.close()
+                con.commit()
+                con.close()
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
+                cur = con.cursor()
+                #Execute a SELECT query
+                create_database_query = ("""create table if not exists form (
+                                        id int auto_increment primary key,FullName varchar(225),Address varchar(225),Cellno int,Date varchar(50),GaurdiansName varchar(225),PhoneNo int,Email varchar(225),Gender varchar(225),DateOfBirth varchar(255),LevelOfEducation varchar(50),Schoolorcollege varchar(225))
+		                                """)
+                cur.execute(create_database_query)
+                con.commit()
+                con.close() 
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
+                cur = con.cursor()
+                #Execute a SELECT query
+                create_database_query = ("""CREATE TABLE if not exists enroll(
+                                        id int auto_increment primary key,course1 varchar(225),course2 varchar(225),course3 varchar(225),shifttime int,codinator varchar(225),student varchar(225),other varchar(225))
+		                                """)
+                cur.execute(create_database_query)
+                con.commit()
+                con.close() 
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
+                cur = con.cursor()
+                #Execute a SELECT query
+                create_database_query = ("""CREATE TABLE if not exists office(
+                                        id int auto_increment primary key,Fullname varchar(225),Address varchar(225),DateOfBirth varchar(50),Refrence varchar(225),Refrencecontact int,Discount int,SourcesOfInformation varchar(225))
+		                                """)
+                cur.execute(create_database_query)
+                con.commit()
+                con.close() 
+            except:
+                messagebox.showinfo("cant connetc","unable to connect to the data base")
+            db.destroy()
+        
+
+
+
+        button= ttk.Button(data_frame,text="connect",style="Rounded.TButton",command=link)
+        button.grid(row=1, column=0, padx=10, pady=10)
+        
+     
+        db.mainloop()
     def photo():
        from PIL import Image, ImageTk
        file_path = filedialog.askopenfilename(title="Select a File")
@@ -31,70 +106,77 @@ def hub():
            label.image = tk_img  # Keep a reference to the image
            label.place(x=878, y=170)
        else:
-            label.configure(text="image not found")
+            label.configure(text="image not found") 
 
     def sub():
 ################values###########
-        import mysql.connector 
-        fullname =headle.get()
-        address=addrs.get()
-        cell=cel.get()
-        datee=date.get()
-        gaurd=gaur.get()
-        phohe=phon.get()
-        Email= email.get()
-        gend=genn.get()
-        dateofb=dateb.get()
-        educ=edu.get()
-        cllz=clz.get()
-    
-    
-        con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-        # Create a cursor object to execute SQL queries
-        cursor = con.cursor()
-    
-        # Execute an INSERT query
-        query = "INSERT INTO form(FullName,Address,Cellno,Date,GaurdiansName,PhoneNo,Email,Gender,DateOfBirth,LevelOfEducation,Schoolorcollege) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s)"
-        values = (fullname,address,cell,datee,gaurd,phohe,Email,gend,dateofb,educ,cllz)
-        cursor.execute(query, values)
-        # Commit the transaction
-        con.commit()
-        con.close()
-#=======   ======NAME OF COURSE/S TO ENROLL=============
-        course1=cour1.get()
-        course2 = cour2.get()
-        course3 = cour3.get()
-        shift1=shift.get()
-        codinator=cod.get()
-        student = stud.get()
-        other = o.get()
-        con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-        # Create a cursor object to execute SQL queries
-        cursor = con.cursor()
-        query = "INSERT INTO enroll(course1,course2,course3,shifttime,codinator,student,other) VALUES (%s, %s, %s,%s, %s, %s,%s)"
-        values = (course1,course2,course3,shift1,codinator,student,other)
-        cursor.execute(query, values)
-        # Commit the transaction
-        con.commit()
-        con.close()
-        fulln=full.get()
-        add=ad.get()
-        dob1=dob.get()
-        ref1=ref.get()
-        refc1=refc.get()
-        dis1=dis.get()
-        sof1=sof.get()
-        con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-        # Create a cursor object to execute SQL queries
-        cursor = con.cursor()
-    
-        query = "INSERT INTO office(Fullname,Address,DateOfBirth,Refrence,Refrencecontact,Discount,SourcesOfInformation) VALUES (%s, %s, %s,%s, %s, %s,%s)"
-        values = (fulln,add,dob1,ref1,refc1,dis1,sof1)
-        cursor.execute(query, values)
-        con.commit()
-        con.close()
-
+        try:
+            import re
+            import mysql.connector 
+            fullname =headle.get()
+            address=addrs.get()
+            cell=cel.get()
+            datee=date.get()
+            gaurd=gaur.get()
+            phohe=phon.get()
+            Email= email.get()
+            gend=genn.get()
+            dateofb=dateb.get()
+            educ=edu.get()
+            cllz=clz.get()
+            pattern = r'^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@gmail\.com$'
+            if re.match(pattern,Email):
+                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+            # Create a cursor object to execute SQL queries
+                cursor = con.cursor()            
+                # Execute an INSERT query
+                query = "INSERT INTO form(FullName,Address,Cellno,Date,GaurdiansName,PhoneNo,Email,Gender,DateOfBirth,LevelOfEducation,Schoolorcollege) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s)"
+                values = (fullname,address,cell,datee,gaurd,phohe,Email,gend,dateofb,educ,cllz)
+                cursor.execute(query, values)
+                # Commit the transaction
+                con.commit()
+                con.close()
+            elif Email is not None and Email != "":
+                messagebox.showinfo("Invalid Email", "Email is not valid")
+            else:
+                pass
+       
+#======    =   ======NAME OF COURSE/S TO ENROLL=============
+            course1=cour1.get()
+            course2 = cour2.get()
+            course3 = cour3.get()
+            shift1=shift.get()
+            codinator=cod.get()
+            student = stud.get()
+            other = o.get()
+            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+            # Create a cursor object to execute SQL queries
+            cursor = con.cursor()
+            query = "INSERT INTO enroll(course1,course2,course3,shifttime,codinator,student,other) VALUES (%s, %s, %s,%s, %s, %s,%s)"
+            values = (course1,course2,course3,shift1,codinator,student,other)
+            cursor.execute(query, values)
+            # Commit the transaction
+            con.commit()
+            con.close()
+            fulln=full.get()
+            add=ad.get()
+            dob1=dob.get()
+            ref1=ref.get()
+            refc1=refc.get()
+            dis1=dis.get()
+            sof1=sof.get()
+            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+            # Create a cursor object to execute SQL queries
+            cursor = con.cursor()
         
+            query = "INSERT INTO office(Fullname,Address,DateOfBirth,Refrence,Refrencecontact,Discount,SourcesOfInformation) VALUES (%s, %s, %s,%s, %s, %s,%s)"
+            values = (fulln,add,dob1,ref1,refc1,dis1,sof1)
+            cursor.execute(query, values)
+            con.commit()
+            con.close()
+            messagebox.showinfo("Success", "Record successfully saved.")
+        except:
+            messagebox.showerror('Error!', 'Please check all fields')
 
 
 #==================detial=================
@@ -148,6 +230,10 @@ def hub():
              background="#A1056A",
              width=45,
              foreground="white").place(x=245,y=1000)
+
+#--------------------create table if not exist--------------------
+        
+
 
  #===================inner scrollable frame========================
 
@@ -280,49 +366,59 @@ def hub():
             emailentry.delete(0,END)
 
         def add_():
-            import mysql.connector
-            a=fl_entry.get()
-            b=A_entry.get()
-            c=cellentry.get()
-            d=date_entry.get()
-            e=gaurd_entry.get()
-            f=phon_entry.get()
-            g=gender_entry.get()
-            h=edu_entry.get()
-            i=DOB_entry.get()
-            j=emailentry.get()
-            k= clzentry.get()
-
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-            # Create a cursor object to execute SQL queries
-            cursor = con.cursor()
+            try:
+                import re
+                import mysql.connector
+                a=fl_entry.get()
+                b=A_entry.get()
+                c=cellentry.get()
+                d=date_entry.get()
+                e=gaurd_entry.get()
+                f=phon_entry.get()
+                g=gender_entry.get()
+                h=edu_entry.get()
+                i=DOB_entry.get()
+                j=emailentry.get()
+                k= clzentry.get()
+                if not all([a, b, c, d, e, f, g,h,i,k]):
+                    messagebox.showinfo("Error", "All input fields must be filled")
+                pattern = r'^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@gmail\.com$'
+                if re.match(pattern,j):
+                    con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                    # Create a cursor object to execute SQL queries
+                    cursor = con.cursor()
+                
+                    # Execute an INSERT query
+                    query = "INSERT INTO form(FullName,Address,Cellno,Date,GaurdiansName,PhoneNo,Email,Gender,DateOfBirth,LevelOfEducation,Schoolorcollege) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s)"
+                    values = (a,b,c,d,e,f,g,h,i,j,k)
+                    cursor.execute(query, values)
+                    # Commit the transaction
+                    con.commit()
+                    con.close()
+                    # Clear entry boxes
         
-            # Execute an INSERT query
-            query = "INSERT INTO form(FullName,Address,Cellno,Date,GaurdiansName,PhoneNo,Email,Gender,DateOfBirth,LevelOfEducation,Schoolorcollege) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s)"
-            values = (a,b,c,d,e,f,g,h,i,j,k)
-            cursor.execute(query, values)
-            # Commit the transaction
-            con.commit()
-            con.close()
-            # Clear entry boxes
-
-	# Clear The Treeview Table
-            fl_entry.delete(0, END)
-            A_entry.delete(0, END)
-            cellentry.delete(0, END)
-            date_entry.delete(0, END)
-            gaurd_entry.delete(0, END)
-            phon_entry.delete(0, END)
-            gender_entry.delete(0, END)
-            edu_entry.delete(0, END)
-            DOB_entry.delete(0,END)
-            clzentry.delete(0,END)
-            emailentry.delete(0,END)
-            tree.delete(*tree.get_children())
-
-	# Run to pull data from database on start
-            data()
-
+	               # Clear The Treeview Table
+                    fl_entry.delete(0, END)
+                    A_entry.delete(0, END)
+                    cellentry.delete(0, END)
+                    date_entry.delete(0, END)
+                    gaurd_entry.delete(0, END)
+                    phon_entry.delete(0, END)
+                    gender_entry.delete(0, END)
+                    edu_entry.delete(0, END)
+                    DOB_entry.delete(0,END)
+                    clzentry.delete(0,END)
+                    emailentry.delete(0,END)
+                    tree.delete(*tree.get_children())
+        
+	            # Run to pull data from database on start
+                    data()
+                elif j is not None and j != "":
+                    messagebox.showinfo("Invalid Email", "Email is not valid")
+                else:
+                    pass
+            except:
+                messagebox.showinfo("error","invalid input")        
         def select_record(e):
             clear_entries()
             selected = tree.focus()
@@ -344,100 +440,109 @@ def hub():
         #========================updatingg==========================
 # ... (previous code)
         def update():
-            selected = tree.focus()
-            id = tree.item(selected, 'values')[0]
-        
-            # Update record in Treeview
-            tree.item(selected, text="", values=(id, fl_entry.get(), A_entry.get(), cellentry.get(), date_entry.get(),
-                                                  gaurd_entry.get(), phon_entry.get(), gender_entry.get(), edu_entry.get(),
-                                                  DOB_entry.get(), emailentry.get(), clzentry.get()))
-        
-            import mysql.connector
-            con = mysql.connector.connect(host="localhost", user="root", password="Nabin(123)", database="student")
-        
-            # Create a cursor object to execute SQL queries
-            cursor = con.cursor()
-        
-            cursor.execute("""
-                UPDATE form SET
-                Address = %s,
-                Cellno = %s,
-                Date = %s,
-                GaurdiansName = %s,
-                PhoneNo = %s,
-                Email = %s,
-                Gender = %s,
-                DateOfBirth = %s,
-                LevelOfEducation = %s,
-                Schoolorcollege = %s,
-                FullName = %s
-                WHERE id = %s
-            """, (
-                A_entry.get(),
-                cellentry.get(),
-                date_entry.get(),
-                gaurd_entry.get(),
-                phon_entry.get(),
-                emailentry.get(),
-                gender_entry.get(),
-                DOB_entry.get(),
-                edu_entry.get(),
-                clzentry.get(),
-                fl_entry.get(),
-                id,  # Pass the ID as a single-element tuple
-            ))
-        
-            con.commit()
-            con.close()
-
-# ... (rest of the code)
-
-            	# Clear entry boxes
-
-            fl_entry.delete(0, END)
-            A_entry.delete(0, END)
-            cellentry.delete(0, END)
-            date_entry.delete(0, END)
-            gaurd_entry.delete(0, END)
-            phon_entry.delete(0, END)
-            gender_entry.delete(0, END)
-            edu_entry.delete(0, END)
-            DOB_entry.delete(0,END)
-            clzentry.delete(0,END)
-            emailentry.delete(0,END)
-            tree.delete(*tree.get_children())
-
-	# Run to pull data from database on start
-            data()
-        def remove_many():
-            import mysql.connector
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-            # Create a cursor object to execute SQL queries
-            cursor = con.cursor()
-	# Add a little message box for fun
-            response = messagebox.askyesno("WOAH!!!!", "This Will Delete EVERYTHING SELECTED From The Table\nAre You Sure?!")
-            if response == 1:
-	        	# Designate selections
-                x = tree.selection()
-        
-	        	# Create List of ID's
-                ids_to_delete = []
-	        	
-	        	# Add selections to ids_to_delete list
-                for record in x:
-                    ids_to_delete.append(tree.item(record, 'values')[0])
-        
-	        	# Delete From Treeview
-                for record in x:
-                    tree.delete(record)
-        
-        
-	        	# Delete Everything From The Table
-                cursor.executemany("DELETE FROM form WHERE id = %s", [(a,) for a in ids_to_delete])
-                ids_to_delete = []
+            try:
+                selected = tree.focus()
+                id = tree.item(selected, 'values')[0]
+            
+                # Update record in Treeview
+                tree.item(selected, text="", values=(id, fl_entry.get(), A_entry.get(), cellentry.get(), date_entry.get(),
+                                                      gaurd_entry.get(), phon_entry.get(), gender_entry.get(), edu_entry.get(),
+                                                      DOB_entry.get(), emailentry.get(), clzentry.get()))
+            
+                import mysql.connector
+                con = mysql.connector.connect(host="localhost", user="root", password="Nabin(123)", database="student")
+            
+                # Create a cursor object to execute SQL queries
+                cursor = con.cursor()
+            
+                cursor.execute("""
+                    UPDATE form SET
+                    Address = %s,
+                    Cellno = %s,
+                    Date = %s,
+                    GaurdiansName = %s,
+                    PhoneNo = %s,
+                    Email = %s,
+                    Gender = %s,
+                    DateOfBirth = %s,
+                    LevelOfEducation = %s,
+                    Schoolorcollege = %s,
+                    FullName = %s
+                    WHERE id = %s
+                """, (
+                    A_entry.get(),
+                    cellentry.get(),
+                    date_entry.get(),
+                    gaurd_entry.get(),
+                    phon_entry.get(),
+                    emailentry.get(),
+                    gender_entry.get(),
+                    DOB_entry.get(),
+                    edu_entry.get(),
+                    clzentry.get(),
+                    fl_entry.get(),
+                    id,  # Pass the ID as a single-element tuple
+                ))
+            
                 con.commit()
                 con.close()
-                clear_entries()
+            
+# ... (rest     of the code)
+    
+                	# Clear entry boxes
+    
+                fl_entry.delete(0, END)
+                A_entry.delete(0, END)
+                cellentry.delete(0, END)
+                date_entry.delete(0, END)
+                gaurd_entry.delete(0, END)
+                phon_entry.delete(0, END)
+                gender_entry.delete(0, END)
+                edu_entry.delete(0, END)
+                DOB_entry.delete(0,END)
+                clzentry.delete(0,END)
+                emailentry.delete(0,END)
+                tree.delete(*tree.get_children())
+    
+	# Run to     pull data from database on start
+                data()
+            except:
+                messagebox.showinfo("error","invalid input")
+    
+        def remove_many():
+            try:
+                import mysql.connector
+                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+            # Create a cursor object to execute SQL queries
+                cursor = con.cursor()
+	# Add a     little message box for fun
+                response = messagebox.askyesno("WOAH!!!!", "This Will Delete EVERYTHING SELECTED From The Table\nAre You Sure?!")
+                if response == 1:
+	            	# Designate selections
+                    x = tree.selection()
+            
+	            	# Create List of ID's
+                    ids_to_delete = []
+	            	
+	            	# Add selections to ids_to_delete list
+                    for record in x:
+                        ids_to_delete.append(tree.item(record, 'values')[0])
+            
+	            	# Delete From Treeview
+                    for record in x:
+                        tree.delete(record)
+            
+            
+	            	# Delete Everything From The Table
+                    cursor.executemany("DELETE FROM form WHERE id = %s", [(a,) for a in ids_to_delete])
+                    ids_to_delete = []
+                    con.commit()
+                    con.close()
+                    clear_entries()
+            except:
+                messagebox.showinfo("error","unable to delete")
+    
+                
         
 
         #===================command section========================================
@@ -565,96 +670,114 @@ def hub():
 
 
         def add():
-            import mysql.connector
-            a=c_entry.get()
-            b=c2_entry.get()
-            c=c3entry.get()
-            d=shift_entry.get()
-            e=cc_entry.get()
-            f=stu_entry.get()
-            g=oth_entry.get()
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-            cur = con.cursor()
-            # Create a cursor object to execute SQL queries
-            cursor = con.cursor()
-            query = "INSERT INTO enroll(course1,course2,course3,shifttime,codinator,student,other) VALUES (%s, %s, %s,%s, %s, %s,%s)"
-            values = (a,b,c,d,e,f,g)
-            cursor.execute(query, values)
-            con.commit()
-            con.close()
-            c_entry.delete(0, END)
-            c2_entry.delete(0, END)
-            c3entry.delete(0, END)
-            shift_entry.delete(0, END)
-            cc_entry.delete(0, END)
-            stu_entry.delete(0, END)
-            oth_entry.delete(0,END)
-            tree.delete(*tree.get_children())
-            data2()
-        def update_record():
-            selected = tree2.focus()
-            id=tree2.item(selected,'values')[0]
-	# Update record
-            tree2.item(selected, text="", values=(id,c_entry.get(),c2_entry.get(),c3entry.get(),shift_entry.get(),cc_entry.get(),stu_entry.get(),oth_entry.get(),))
-            import mysql.connector
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-            # Create a cursor object to execute SQL queries
-            cursor = con.cursor()
-            cursor.execute( """
-                           UPDATE enroll SET
-                           course1= %s,                           
-                           course2=%s,
-                           course3=%s,
-                           shifttime=%s,
-                           codinator=%s,
-                           student=%s,
-                           other=%s
-                           WHERE id = %s
-                        """, (c_entry.get(),
-                              c2_entry.get(),
-                              c3entry.get(),
-                              shift_entry.get(),
-                              cc_entry.get(),
-                              stu_entry.get(),
-                              oth_entry.get(),
-                              id,
-                            ))
+            try:
+                import mysql.connector
+                a=c_entry.get()
+                b=c2_entry.get()
+                c=c3entry.get()
+                d=shift_entry.get()
+                e=cc_entry.get()
+                f=stu_entry.get()
+                g=oth_entry.get()
+                if not all([a, b, c, d, e, f, g]):
+                    messagebox.showinfo("Error", "All input fields must be filled")
+                else:
+                    con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                    cur = con.cursor()
+                    # Create a cursor object to execute SQL queries
+                    cursor = con.cursor()
+                    query = "INSERT INTO enroll(course1,course2,course3,shifttime,codinator,student,other) VALUES (%s, %s, %s,%s, %s, %s,%s)"
+                    values = (a,b,c,d,e,f,g)
+                    cursor.execute(query, values)
+                    con.commit()
+                    con.close()
+                    c_entry.delete(0, END)
+                    c2_entry.delete(0, END)
+                    c3entry.delete(0, END)
+                    shift_entry.delete(0, END)
+                    cc_entry.delete(0, END)
+                    stu_entry.delete(0, END)
+                    oth_entry.delete(0,END)
+                    tree.delete(*tree2.get_children())
+                    data2()
+            except:
+                messagebox.showinfo("error","invalid input")
 
-            # Commit the transaction
-            con.commit()
-            con.close()
-            tree2.delete(*tree2.get_children())
-            data2()
-        def remove():
-            import mysql.connector
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-            # Create a cursor object to execute SQL queries
-            cursor = con.cursor()
-            response = messagebox.askyesno("WOAH!!!!", "This Will Delete EVERYTHING SELECTED From The Table\nAre You Sure?!")
-            if response == 1:
-            	# Designate selections
-                x = tree2.selection()
-            
-            	# Create List of ID's
-                ids_to_delete = []
-            	
-            	# Add selections to ids_to_delete list
-                for record in x:
-                    ids_to_delete.append(tree2.item(record, 'values')[0])
-            
-            	# Delete From Treeview
-                for record in x:
-                    tree2.delete(record)
-            
-            
-            	# Delete Everything From The Table
-                cursor.executemany("DELETE FROM enroll WHERE id = %s", [(a,) for a in ids_to_delete])
-                ids_to_delete = []
+
+        def update_record():
+            try:
+                selected = tree2.focus()
+                id=tree2.item(selected,'values')[0]
+	# Update     record
+                tree2.item(selected, text="", values=(id,c_entry.get(),c2_entry.get(),c3entry.get(),shift_entry.get(),cc_entry.get(),stu_entry.get(),oth_entry.get(),))
+                import mysql.connector
+                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                # Create a cursor object to execute SQL queries
+                cursor = con.cursor()
+                cursor.execute( """
+                               UPDATE enroll SET
+                               course1= %s,                           
+                               course2=%s,
+                               course3=%s,
+                               shifttime=%s,
+                               codinator=%s,
+                               student=%s,
+                               other=%s
+                               WHERE id = %s
+                            """, (c_entry.get(),
+                                  c2_entry.get(),
+                                  c3entry.get(),
+                                  shift_entry.get(),
+                                  cc_entry.get(),
+                                  stu_entry.get(),
+                                  oth_entry.get(),
+                                  id,
+                                ))
+    
+                # Commit the transaction
                 con.commit()
                 con.close()
-                clear_entries()
-            
+                tree2.delete(*tree2.get_children())
+                data2()
+            except:
+                messagebox.showinfo("error","invalid input")
 
+
+
+
+        def remove():
+            try:
+                import mysql.connector
+                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                # Create a cursor object to execute SQL queries
+                cursor = con.cursor()
+                response = messagebox.askyesno("WOAH!!!!", "This Will Delete EVERYTHING SELECTED From The Table\nAre You Sure?!")
+                if response == 1:
+                	# Designate selections
+                    x = tree2.selection()
+                
+                	# Create List of ID's
+                    ids_to_delete = []
+                	
+                	# Add selections to ids_to_delete list
+                    for record in x:
+                        ids_to_delete.append(tree2.item(record, 'values')[0])
+                
+                	# Delete From Treeview
+                    for record in x:
+                        tree2.delete(record)
+                
+                
+                	# Delete Everything From The Table
+                    cursor.executemany("DELETE FROM enroll WHERE id = %s", [(a,) for a in ids_to_delete])
+                    ids_to_delete = []
+                    con.commit()
+                    con.close()
+                    clear_entries()
+            except:
+                messagebox.showinfo("error","unable to delete")
+                
+    
 #===================command section========================================
         button_frame2 = LabelFrame(frame_main, text="Commands")
         button_frame2.place(x=25,y=930)
@@ -768,36 +891,39 @@ def hub():
             so_entry.delete(0, END)
 
         def add_record():
-            import mysql.connector
-            a=fn_entry.get()
-            b=a_entry.get()
-            c=Dob_entry.get()
-            d=r3_entry.get()
-            e=rf_entry.get()
-            f=dis_entry.get()
-            g=so_entry.get()
-            
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-            cur = con.cursor()
-            # Create a cursor object to execute SQL queries
-            cursor = con.cursor()
+            try:
+                import mysql.connector
+                a=fn_entry.get()
+                b=a_entry.get()
+                c=Dob_entry.get()
+                d=r3_entry.get()
+                e=rf_entry.get()
+                f=dis_entry.get()
+                g=so_entry.get()
+                
+                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                cur = con.cursor()
+                # Create a cursor object to execute SQL queries
+                cursor = con.cursor()
+        
+                query = "INSERT INTO office(Fullname,Address,DateOfBirth,Refrence,Refrencecontact,Discount,SourcesOfInformation) VALUES (%s, %s, %s,%s, %s, %s,%s)"
+                values = (a,b,c,d,e,f,g)
+                cursor.execute(query, values)
+                con.commit()
+                con.close()
     
-            query = "INSERT INTO office(Fullname,Address,DateOfBirth,Refrence,Refrencecontact,Discount,SourcesOfInformation) VALUES (%s, %s, %s,%s, %s, %s,%s)"
-            values = (a,b,c,d,e,f,g)
-            cursor.execute(query, values)
-            con.commit()
-            con.close()
-
-            fn_entry.delete(0, END)
-            a_entry.delete(0, END)
-            r3_entry.delete(0, END)
-            Dob_entry.delete(0, END)
-            rf_entry.delete(0, END)
-            dis_entry.delete(0, END)
-            so_entry.delete(0, END)
-            tree3.delete(*tree.get_children())
-
-            data3()
+                fn_entry.delete(0, END)
+                a_entry.delete(0, END)
+                r3_entry.delete(0, END)
+                Dob_entry.delete(0, END)
+                rf_entry.delete(0, END)
+                dis_entry.delete(0, END)
+                so_entry.delete(0, END)
+                tree3.delete(*tree3.get_children())
+    
+                data3()
+            except:
+                messagebox.showinfo("error","invalid input")
 
         def select_recor(e):
             clear_entries3()
@@ -814,70 +940,76 @@ def hub():
         
 
         def remove():
-            import mysql.connector
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-            # Create a cursor object to execute SQL queries
-            cursor = con.cursor()
-            response = messagebox.askyesno("WOAH!!!!", "This Will Delete EVERYTHING SELECTED From The Table\nAre You Sure?!")
-            if response == 1:
-            	# Designate selections
-                x = tree3.selection()
-            
-            	# Create List of ID's
-                ids_to_delete = []
-            	
-            	# Add selections to ids_to_delete list
-                for record in x:
-                    ids_to_delete.append(tree2.item(record, 'values')[0])
-            
-            	# Delete From Treeview
-                for record in x:
-                    tree3.delete(record)
-            
-            
-            	# Delete Everything From The Table
-                cursor.executemany("DELETE FROM office WHERE id = %s", [(a,) for a in ids_to_delete])
-                ids_to_delete = []
-                con.commit()
-                con.close()
-                clear_entries()
+            try:
+                import mysql.connector
+                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                # Create a cursor object to execute SQL queries
+                cursor = con.cursor()
+                response = messagebox.askyesno("WOAH!!!!", "This Will Delete EVERYTHING SELECTED From The Table\nAre You Sure?!")
+                if response == 1:
+                	# Designate selections
+                    x = tree3.selection()
+                
+                	# Create List of ID's
+                    ids_to_delete = []
+                	
+                	# Add selections to ids_to_delete list
+                    for record in x:
+                        ids_to_delete.append(tree3.item(record, 'values')[0])
+                
+                	# Delete From Treeview
+                    for record in x:
+                        tree3.delete(record)
+                
+                
+                	# Delete Everything From The Table
+                    cursor.executemany("DELETE FROM office WHERE id = %s", [(a,) for a in ids_to_delete])
+                    ids_to_delete = []
+                    con.commit()
+                    con.close()
+                    clear_entries()
+            except:
+                messagebox.showinfo("error","unable to delete")
                 
             
 
         def update_():
-            selected = tree3.focus()
-            id=tree3.item(selected, 'values')[0]
-	# Update record
-            tree3.item(selected, text="", values=(id,fn_entry.get(),a_entry.get(),Dob_entry.get(),r3_entry.get(),rf_entry.get(),dis_entry.get(),so_entry.get(),))
-            import mysql.connector
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
-            # Create a cursor object to execute SQL queries
-            cursor = con.cursor()
-            cursor.execute( """
-                           UPDATE office SET
-                           Fullname= %s,
-                           Address= %s,
-                           DateOfBirth = %s,
-                           Refrence = %s,
-                           Refrencecontact=%s,
-                           Discount=%s,
-                           SourcesOfInformation=%s
-                           WHERE id = %s
-                        """, (fn_entry.get(),
-                              a_entry.get(),
-                              Dob_entry.get(),
-                              r3_entry.get(),
-                              rf_entry.get(),
-                              dis_entry.get(),
-                              so_entry.get(),
-                              id,
-                            ))
-
-            # Commit the transaction
-            con.commit()
-            con.close()
-            tree3.delete(*tree3.get_children())
-            data3()
+            try:
+                selected = tree3.focus()
+                id=tree3.item(selected, 'values')[0]
+	# Update     record
+                tree3.item(selected, text="", values=(id,fn_entry.get(),a_entry.get(),Dob_entry.get(),r3_entry.get(),rf_entry.get(),dis_entry.get(),so_entry.get(),))
+                import mysql.connector
+                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                # Create a cursor object to execute SQL queries
+                cursor = con.cursor()
+                cursor.execute( """
+                               UPDATE office SET
+                               Fullname= %s,
+                               Address= %s,
+                               DateOfBirth = %s,
+                               Refrence = %s,
+                               Refrencecontact=%s,
+                               Discount=%s,
+                               SourcesOfInformation=%s
+                               WHERE id = %s
+                            """, (fn_entry.get(),
+                                  a_entry.get(),
+                                  Dob_entry.get(),
+                                  r3_entry.get(),
+                                  rf_entry.get(),
+                                  dis_entry.get(),
+                                  so_entry.get(),
+                                  id,
+                                ))
+    
+                # Commit the transaction
+                con.commit()
+                con.close()
+                tree3.delete(*tree3.get_children())
+                data3()
+            except:
+                messagebox.showinfo("error","invalid input")
 
 
 
@@ -1159,5 +1291,7 @@ def hub():
     button.place(x=50, y=126)
     button = ttk.Button(frame1,text="detial",style="Rounded.TButton",command=detial)
     button.place(x=350,y=1180)
+    button = ttk.Button(frame1,text="Link To Database",style="Rounded.TButton",command=database)
+    button.place(x=750,y=1180)
     root.mainloop()
 hub()
