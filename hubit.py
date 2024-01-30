@@ -1,7 +1,7 @@
 from tkinter import *
 def hub():
-    from tkinter import  Tk, Canvas, ttk,Entry,Label,Frame,Scrollbar
-    from customtkinter import CTkFrame,CTkScrollableFrame
+    from tkinter import  Tk, Canvas, ttk,Entry,Label
+    from customtkinter import CTkFrame
     from tkinter import filedialog
     from tkinter import messagebox
     def on_mousewheel(event):
@@ -37,6 +37,9 @@ def hub():
 
 
         def link():
+            global host1
+            global user1
+            global password1
             host1=hs_entry.get()
             user1=u_entry.get()
             password1=pasw_entry.get()
@@ -126,7 +129,7 @@ def hub():
             cllz=clz.get()
             pattern = r'^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@gmail\.com$'
             if re.match(pattern,Email):
-                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
             # Create a cursor object to execute SQL queries
                 cursor = con.cursor()            
                 # Execute an INSERT query
@@ -149,7 +152,7 @@ def hub():
             codinator=cod.get()
             student = stud.get()
             other = o.get()
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+            con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
             # Create a cursor object to execute SQL queries
             cursor = con.cursor()
             query = "INSERT INTO enroll(course1,course2,course3,shifttime,codinator,student,other) VALUES (%s, %s, %s,%s, %s, %s,%s)"
@@ -165,7 +168,7 @@ def hub():
             refc1=refc.get()
             dis1=dis.get()
             sof1=sof.get()
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+            con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
             # Create a cursor object to execute SQL queries
             cursor = con.cursor()
         
@@ -241,7 +244,7 @@ def hub():
 #===================fetching============================================
         def data():
             import mysql.connector
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+            con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
             cur = con.cursor()
             #Execute a SELECT query
             query = "SELECT * FROM form"
@@ -384,7 +387,7 @@ def hub():
                     messagebox.showinfo("Error", "All input fields must be filled")
                 pattern = r'^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@gmail\.com$'
                 if re.match(pattern,j):
-                    con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                    con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
                     # Create a cursor object to execute SQL queries
                     cursor = con.cursor()
                 
@@ -512,7 +515,7 @@ def hub():
         def remove_many():
             try:
                 import mysql.connector
-                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
             # Create a cursor object to execute SQL queries
                 cursor = con.cursor()
 	# Add a     little message box for fun
@@ -568,7 +571,7 @@ def hub():
         #===================fetching============================================
         def data2():
             import mysql.connector
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+            con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
             cur = con.cursor()
             #Execute a SELECT query
             query = "SELECT * FROM enroll"
@@ -682,7 +685,7 @@ def hub():
                 if not all([a, b, c, d, e, f, g]):
                     messagebox.showinfo("Error", "All input fields must be filled")
                 else:
-                    con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                    con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
                     cur = con.cursor()
                     # Create a cursor object to execute SQL queries
                     cursor = con.cursor()
@@ -711,7 +714,7 @@ def hub():
 	# Update     record
                 tree2.item(selected, text="", values=(id,c_entry.get(),c2_entry.get(),c3entry.get(),shift_entry.get(),cc_entry.get(),stu_entry.get(),oth_entry.get(),))
                 import mysql.connector
-                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
                 # Create a cursor object to execute SQL queries
                 cursor = con.cursor()
                 cursor.execute( """
@@ -748,7 +751,7 @@ def hub():
         def remove():
             try:
                 import mysql.connector
-                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
                 # Create a cursor object to execute SQL queries
                 cursor = con.cursor()
                 response = messagebox.askyesno("WOAH!!!!", "This Will Delete EVERYTHING SELECTED From The Table\nAre You Sure?!")
@@ -802,7 +805,7 @@ def hub():
         #===================fetching============================================
         def data3():
             import mysql.connector
-            con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+            con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
             cur = con.cursor()
             #Execute a SELECT query
             query = "SELECT * FROM office"
@@ -901,7 +904,7 @@ def hub():
                 f=dis_entry.get()
                 g=so_entry.get()
                 
-                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
                 cur = con.cursor()
                 # Create a cursor object to execute SQL queries
                 cursor = con.cursor()
@@ -942,7 +945,7 @@ def hub():
         def remove():
             try:
                 import mysql.connector
-                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
                 # Create a cursor object to execute SQL queries
                 cursor = con.cursor()
                 response = messagebox.askyesno("WOAH!!!!", "This Will Delete EVERYTHING SELECTED From The Table\nAre You Sure?!")
@@ -980,7 +983,7 @@ def hub():
 	# Update     record
                 tree3.item(selected, text="", values=(id,fn_entry.get(),a_entry.get(),Dob_entry.get(),r3_entry.get(),rf_entry.get(),dis_entry.get(),so_entry.get(),))
                 import mysql.connector
-                con = mysql.connector.connect(host="localhost",user="root",password="Nabin(123)",database="student")
+                con = mysql.connector.connect(host=f"{host1}",user=f"{user1}",password=f"{password1}",database="student")
                 # Create a cursor object to execute SQL queries
                 cursor = con.cursor()
                 cursor.execute( """
