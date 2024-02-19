@@ -89,7 +89,7 @@ def online():
        play_button.click()
 
        # Prompt the user to interact before quitting
-       
+       input("enter any button to quit....")
        # Close the WebDriver
        driver.quit()
      except:
